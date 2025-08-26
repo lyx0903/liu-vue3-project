@@ -1,3 +1,4 @@
+<!-- 模板语法 -->
 <template>
   <!-- 文本插值 -->
   <h2>{{ title }}</h2>
@@ -11,7 +12,7 @@
   <!-- v-html 指令 -->
   <div v-html="rawHtml"></div>
 
-  <!-- Attribute 绑定 -->
+  <!-- Attribute 属性绑定 -->
   <div v-bind:style="color">123</div>
   <div :style="color">123</div>
   <div style="background: pink">123</div>
