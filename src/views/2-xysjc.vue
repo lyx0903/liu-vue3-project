@@ -50,8 +50,18 @@ computed():创建基于其他响应式数据的计算属性,自动追踪依赖�
   <!-- 绑定对象：可以给 :class (v-bind:class 的缩写) 传递一个对象来动态切换 class -->
   <div :class="{ active: isActive }"></div>
   <div :class="classObject"></div>
-
+  <!-- 绑定数组：可以给 :class 绑定一个数组来渲染多个 CSS class -->
+  <div :class="[activeClass, errorClass]"></div>
+  <!-- 渲染结果：  <div class="active text-danger"></div>  -->
+  <!-- 想在数组中有条件地渲染某个 class，你可以使用三元表达式,   errorClass 会一直存在，但 activeClass 只会在 isActive 为真时才存在。-->
+  <div :class="[isActive ? activeClass : '', errorClass]"></div>
+  <div :class="[{ [activeClass]: isActive }, errorClass]"></div>
   <!-- 2.绑定内联样式 -->
+  <!-- 绑定对象  -->
+  <div :style="{ color: activeColor, fontSize: fontSize + 'px' }">绑定对象</div>
+  <div :style="styleObject">直接绑定一个样式对象</div>
+  <!-- 绑定数组：可以给 :style 绑定一个包含多个样式对象的数组。这些对象会被合并后渲染到同一元素上 -->
+  <div :style="[baseStyles, overridingStyles]"></div>
 </template>
 
 <script setup>
@@ -95,6 +105,19 @@ const product = reactive({
 
 const isActive = ref(true);
 const hasError = ref(false);
-const error = ref(null);
-// const classObject = computed(() => {});
+
+const classObject = reactive({
+  active: true,
+  "text-danger": false,
+});
+
+const activeClass = ref("active");
+const errorClass = ref("text-danger");
+
+const activeColor = ref("red");
+const fontSize = ref("20");
+const styleObject = reactive({
+  color: "blue",
+  fontSize: "20px",
+});
 </script>
