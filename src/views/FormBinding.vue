@@ -41,7 +41,7 @@ import { reactive, ref } from "vue";
 
 const checked = ref(true);
 
-const checkedNames = ref([]); //为什么reactive不行？？？
+const checkedNames = ref([]); //为什么reactive不行？？？  reactive 针对对象类型， 需要写成 const checkedNames = reactive({}) 这种格式，模板中的变量也要随着变化
 const picked = ref();
 const selected = ref();
 </script>

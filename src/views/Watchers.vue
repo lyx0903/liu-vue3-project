@@ -2,7 +2,7 @@
 watch() 函数是 Vue 3 中用于侦听响应式数据变化的核心函数
 watch(source, callback, options) 
 1. 第一个参数：侦听源 (source)--可以是一个 ref (包括计算属性)、一个响应式对象、一个 getter 函数、或多个数据源组成的数组；
-【ref可以直接传递值也可使用 getter 函数，reactive需要使用 getter 函数实现响应式传递】
+【ref 可以直接传递值也可使用 getter 函数，reactive 需要使用 getter 函数实现响应式传递】
 2. 第二个参数：回调函数 (callback)--接收 newValue、oldValue 和 onCleanup
   watch(source, (newValue, oldValue, onCleanup) => {
   // newValue: 变化后的新值
@@ -34,6 +34,7 @@ watch(source, callback, options)
     </p>
     <p>{{ answer }}</p>
 
+    <!-- 表单 -->
     <div class="form-container">
       <div class="item">
         <label for="name">姓名:</label>
@@ -45,21 +46,26 @@ watch(source, callback, options)
       <div class="item">
         <label>性别:</label>
         <label>
-          <input type="radio" v-model="form.sex" value="男" checked />
+          <input type="radio" v-model="form.sex" value="男" />
           <span>男</span>
         </label>
         <label>
           <input type="radio" v-model="form.sex" value="女" />
           <span>女</span>
         </label>
+        <span class="error-message" v-show="errors.sex">{{ errors.sex }}</span>
       </div>
       <div class="item">
         <label for="age">年龄</label>
         <input type="number" v-model="form.age" id="age" />
+        <span class="error-message" v-show="errors.age">{{ errors.age }}</span>
       </div>
       <div class="item">
         <label for="tell">手机号：</label>
         <input type="tel" v-model="form.tell" id="tell" />
+        <span class="error-message" v-show="errors.tell">{{
+          errors.tell
+        }}</span>
       </div>
       <button @click="submitForm">提交</button>
     </div>
@@ -107,9 +113,10 @@ const errors = reactive({
   tell: "",
 });
 
+// 姓名验证（对于 reactive 创建的响应式对象，写成箭头函数为了实现响应式数据监听，直接写 form.name 会返回一个普通值；如果是 ref ，直接写 form.value.name ）
 watch(
   () => form.name,
-  (newVal, oldVal) => {
+  (newVal) => {
     const trimmedVal = newVal.trim();
     if (!trimmedVal) {
       errors.name = "姓名不能为空";
@@ -123,18 +130,63 @@ watch(
   }
 );
 
-// watch(
-//   () => form.age,
-//   (newVal, oldVal) => {
-//     if (!newVal || newVal < 1 || newVal > 100) {
-//       errors.age = "请输入有效的年龄";
-//     }
-//   }
-// );
+// 性别验证
+watch(
+  () => form.sex,
+  (newVal) => {
+    if (!newVal) {
+      errors.sex = "请选择性别";
+    } else {
+      errors.sex = "";
+    }
+  }
+);
 
+// 验证年龄
+watch(
+  () => form.age,
+  (newVal) => {
+    if (!newVal || newVal < 1 || newVal > 100) {
+      errors.age = "请输入有效的年龄";
+    }
+  }
+);
+
+// 验证电话
+watch(
+  () => form.tell,
+  (newVal) => {
+    const trimmedVal = newVal.trim();
+    if (!trimmedVal) {
+      errors.tell = "电话不能为空";
+      return;
+    }
+    if (!/^[0-9]{11}$/.test(trimmedVal)) {
+      errors.tell = "请输入有效的11位手机号";
+    } else {
+      errors.tell = "";
+    }
+  }
+);
+
+// 提交
 const submitForm = () => {
-  if (!errors.name) {
+  // 检查是否有误
+  const hasError = Object.values(errors).some((error) => error !== "");
+  if (!hasError) {
     console.log(form);
+    resetForm();
+  } else {
+    console.log("验证失败", errors);
   }
 };
+
+const resetForm = () => {
+  Object.keys(form).forEach((element) => {
+    form[element] = "";
+  });
+};
 </script>
+
+<!-- 未完成：年龄验证需完善；取消输入时自动触发验证-->
+<!-- Object.keys(form) 获取form中的所有键 -->
