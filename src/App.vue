@@ -16,6 +16,7 @@
       <router-link to="/Reactivity" class="nav-link">响应式基础</router-link>
       <router-link to="/FormBinding" class="nav-link">表单绑定</router-link>
       <router-link to="/Watchers" class="nav-link">侦听器</router-link>
+      <router-link to="/Demo" class="nav-link">案例</router-link>
     </nav>
 
     <!-- 路由出口：匹配的组件将在这里渲染 -->

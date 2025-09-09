@@ -12,6 +12,7 @@ import TemplateSyntax from "../views/TemplateSyntax.vue";
 import Reactivity from "../views/Reactivity.vue";
 import FormBinding from "../views/FormBinding.vue";
 import Watchers from "../views/Watchers.vue";
+import Demo from "../views/Demo.vue";
 
 // 路由规则
 const routes = [
@@ -34,6 +35,11 @@ const routes = [
     path: "/Watchers",
     name: "侦听器",
     component: Watchers,
+  },
+  {
+    path: "/Demo",
+    name: "案例",
+    component: Demo,
   },
   // {
   //   path: '/about',
