@@ -17,6 +17,8 @@
       <router-link to="/FormBinding" class="nav-link">表单绑定</router-link>
       <router-link to="/Watchers" class="nav-link">侦听器</router-link>
       <router-link to="/Demo" class="nav-link">案例</router-link>
+      <router-link to="/TemplateUse" class="nav-link">模板引用</router-link>
+
     </nav>
 
     <!-- 路由出口：匹配的组件将在这里渲染 -->

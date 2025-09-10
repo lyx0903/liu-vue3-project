@@ -62,7 +62,7 @@
               ? "男"
               : scope.row.sex === "women"
               ? "女"
-              : ""
+              : "-"
           }}
         </template>
       </el-table-column>
@@ -185,7 +185,7 @@ const search = () => {
       formInline.hobby.length === 0
         ? true
         : formInline.hobby.every((h) => {
-            item.hobby.inclouds(h);
+            return item.hobby.includes(h);
           });
     return nameMatch && sexMatch && hobbyMtch; // 所有条件都满足才保留
   });
@@ -217,7 +217,7 @@ const addFormRef = ref(null);
 const form = reactive({
   name: "",
   sex: "",
-  age: "",
+  // age: 0,
   hobby: [],
 });
 
