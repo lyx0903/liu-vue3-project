@@ -14,6 +14,7 @@ import FormBinding from "../views/FormBinding.vue";
 import Watchers from "../views/Watchers.vue";
 import Demo from "../views/Demo.vue";
 import TemplateUse from "../views/templateUse/index.vue";
+import Component from "../views/component/index.vue";
 
 // 路由规则
 const routes = [
@@ -46,6 +47,11 @@ const routes = [
     path: "/TemplateUse",
     name: "模板引用",
     component: TemplateUse,
+  },
+   {
+    path: "/Component",
+    name: "组件基础",
+    component: Component,
   },
   // {
   //   path: '/about',

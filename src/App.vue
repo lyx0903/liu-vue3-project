@@ -18,6 +18,7 @@
       <router-link to="/Watchers" class="nav-link">侦听器</router-link>
       <router-link to="/Demo" class="nav-link">案例</router-link>
       <router-link to="/TemplateUse" class="nav-link">模板引用</router-link>
+      <router-link to="/Component" class="nav-link">组件基础</router-link>
 
     </nav>
 
