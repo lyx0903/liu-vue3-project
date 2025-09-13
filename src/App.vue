@@ -1,9 +1,3 @@
-<script setup>
-// import Mbyf from './views/1-mbyf.vue'
-// import Xysjc from './views/2-xysjc.vue';
-// import Form from "./views/3-form.vue";
-</script>
-
 <template>
   <!-- <Mbyf msg="Vite + Vue" /> -->
   <!-- <Xysjc msg="Vite + Vue" /> -->
@@ -12,13 +6,13 @@
   <div id="app">
     <!-- 导航链接 -->
     <nav>
-      <router-link to="/" class="nav-link">模版语法</router-link>
-      <router-link to="/Reactivity" class="nav-link">响应式基础</router-link>
+      <router-link :to="item.path" class="nav-link" v-for="(item, index) in routerList" :key="index">{{ item.name }}</router-link>
+      <!-- <router-link to="/Reactivity" class="nav-link">响应式基础</router-link>
       <router-link to="/FormBinding" class="nav-link">表单绑定</router-link>
       <router-link to="/Watchers" class="nav-link">侦听器</router-link>
       <router-link to="/Demo" class="nav-link">案例</router-link>
       <router-link to="/TemplateUse" class="nav-link">模板引用</router-link>
-      <router-link to="/Component" class="nav-link">组件基础</router-link>
+      <router-link to="/Component" class="nav-link">组件基础</router-link> -->
 
     </nav>
 
@@ -26,6 +20,18 @@
     <router-view />
   </div>
 </template>
+
+<script setup>
+import { onMounted, ref } from "vue";
+import router from "./router";
+
+const routerList = ref([]); 
+
+onMounted(() => {
+  routerList.value = router.getRoutes()  
+})
+
+</script>
 
 <style scoped>
 nav {

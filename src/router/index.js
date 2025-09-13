@@ -15,6 +15,7 @@ import Watchers from "../views/Watchers.vue";
 import Demo from "../views/Demo.vue";
 import TemplateUse from "../views/templateUse/index.vue";
 import Component from "../views/component/index.vue";
+import ComUse from "../views/comUse/index.vue";
 
 // 路由规则
 const routes = [
@@ -48,10 +49,15 @@ const routes = [
     name: "模板引用",
     component: TemplateUse,
   },
-   {
+  {
     path: "/Component",
     name: "组件基础",
     component: Component,
+  },
+  {
+    path: "/ComUse",
+    name: "组件应用",
+    component: ComUse,
   },
   // {
   //   path: '/about',
