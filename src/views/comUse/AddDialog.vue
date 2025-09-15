@@ -121,7 +121,7 @@ const save = async () => {
   const valid = await addFormRef.value.validate();
 
   const teacherObj = headTeacherOptions.find((item) => {
-    return (form.headTeacher === item.name);
+    return form.headTeacher === item.name;
   });
 
   const time =
@@ -160,7 +160,6 @@ const save = async () => {
   }
 };
 
-defineExpose({
-  addDialogObj,
-});
+// 暴露给父组件的属性和方法
+defineExpose({ addDialogObj });
 </script>

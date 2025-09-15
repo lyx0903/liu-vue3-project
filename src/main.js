@@ -4,8 +4,7 @@ import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import App from "./App.vue";
 import router from "./router"; // 引入路由配置
-import FormHead from "@/components/FormHead/index.vue";
-
+import FormHead from "@/components/FormHead/index.vue"; //引入全局组件
 
 const app = createApp(App);
 
@@ -14,8 +13,8 @@ const app = createApp(App);
 //   /* 处理错误 */
 // }
 
-// 注册一个组件（全局组件）
-app.component('FormHead', FormHead)
+// 注册一个组件（全局组件,页面中无需引入，直接使用）
+app.component("FormHead", FormHead);
 
 app.use(router);
 app.use(ElementPlus);
