@@ -27,12 +27,19 @@
     </FormHead>
     <Btns :countList="count">
       <template #btn>
-        <el-button type="primary" @click="openDialog('add')">新增</el-button>
-        <el-button type="danger" @click="batchDelete">批量删除</el-button>
+        <el-button type="primary" @click="openDialog('新增班级')"
+          >新增</el-button
+        >
+        <el-button
+          type="danger"
+          @click="batchDelete"
+          :disabled="multipleSelection.length === 0"
+          >批量删除</el-button
+        >
       </template>
     </Btns>
     <div class="table">
-      <el-table :data="tableData">
+      <el-table :data="tableData" @selection-change="handleSelectionChange">
         <!-- 复选框列 -->
         <el-table-column type="selection" width="55" />
         <!-- 内容 -->
@@ -63,14 +70,14 @@
               :icon="Edit"
               plain
               circle
-              @click="openDialog('edit')"
+              @click="openDialog('编辑班级', scope.row)"
             />
             <el-button
               type="danger"
               :icon="Delete"
               plain
               circle
-              @click="deleteRow(scope.row)"
+              @click="deleteRow(scope.row.id)"
             />
           </template>
         </el-table-column>
@@ -81,7 +88,14 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref, useTemplateRef } from "vue";
+import {
+  computed,
+  onMounted,
+  reactive,
+  ref,
+  useTemplateRef,
+  nextTick,
+} from "vue";
 import Btns from "@/components/Btns/index.vue";
 import axios from "axios";
 import {
@@ -92,7 +106,7 @@ import {
   Download,
   Plus,
 } from "@element-plus/icons-vue";
-import AddDialog from "../../comUse/AddDialog.vue";
+import AddDialog from "./AddDialog.vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 //页面初始调取接口加载全部
@@ -101,15 +115,14 @@ onMounted(() => {
 });
 
 const formInline = reactive({}); //查询条件响应式对象
+const tableData = ref([]); // 表格数据
+const selectedIds = ref([]); // 选中的ID列表
 
 // 传递给子组件 Btns ，子组件处理后展示
 const count = ref([
-  { label: "班级数量", value: 5, type: "primary" },
-  { label: "人员总数量", value: 108, type: "success" },
+  { label: "班级数量", value: 0, type: "primary" },
+  { label: "人员总数量", value: 0, type: "success" },
 ]);
-
-const tableData = ref([]); // 表格数据
-const selectedIds = ref([]); // 选中的ID列表
 
 //请求接口获取列表
 const getList = () => {
@@ -118,6 +131,12 @@ const getList = () => {
     .then(function (res) {
       console.log(res.data); //调试器中查看输出的内容
       tableData.value = res.data; //res.data 赋值给表格，在页面中显示
+      count.value[0].value = tableData.value.length;
+      // count.value[1].value =
+
+      count.value[1].value = tableData.value.reduce((total, item) => {
+        return total + item.studentCount;
+      }, 0);
     })
     .catch(function (error) {
       console.log(error);
@@ -127,11 +146,37 @@ const getList = () => {
     });
 };
 
+const multipleSelection = ref([]);
+const handleSelectionChange = (val) => {
+  multipleSelection.value = val;
+};
+
 // 批量删除
-const batchDelete = () => {};
+const batchDelete = async () => {
+  // let ids = multipleSelection.value.map((item) => {
+  //   return item.id;
+  // })
+
+  try {
+    let isDelete = await ElMessageBox.confirm("确认删除吗？", "警告", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    });
+    if (isDelete) {
+      for (const item of multipleSelection.value) {
+        await deleteById(item.id);
+      }
+      ElMessage({ type: "success", message: "删除成功" }); //消息提示
+      getList(); //获取列表 
+    }
+  } catch (error) {
+    ElMessage({ type: "info", message: "已取消" });
+  }
+};
 
 // 删除行
-const deleteRow = async (row) => {
+const deleteRow = async (id) => {
   try {
     let isDelete = await ElMessageBox.confirm("确认删除该条目吗？", "警告", {
       confirmButtonText: "确定",
@@ -139,13 +184,17 @@ const deleteRow = async (row) => {
       type: "warning",
     });
     if (isDelete) {
-      await axios.delete("/api/getClassList/" + row.id); // 用户确认后，发起删除请求
+      await deleteById(id);
       ElMessage({ type: "success", message: "删除成功" }); //消息提示
-      getList(); //获取列表
+      getList(); //获取列表 
     }
   } catch (error) {
     ElMessage({ type: "info", message: "已取消" });
   }
+};
+
+const deleteById = async (id) => {
+  await axios.delete("/api/getClassList/" + id); // 用户确认后，发起删除请求
 };
 
 // const deleteRow = (row) => {
@@ -167,13 +216,26 @@ const deleteRow = async (row) => {
 
 // 弹窗
 const addDialogRef = useTemplateRef("addDialogRef");
-const openDialog = (flag) => {
-  if (flag === "add") {
-    // console.log(addDialogRef.value);
-    addDialogRef.value.addDialogObj.show = true; //打开弹窗
-  } else if (flag === "edit") {
-    addDialogRef.value.addDialogObj.show = true;
-    addDialogRef.value.addDialogObj.title = "编辑";
+const openDialog = async (flag, row) => {
+  addDialogRef.value.addDialogObj.show = true; //打开弹窗
+  addDialogRef.value.addDialogObj.title = flag;
+
+  // DOM 未更新
+  await nextTick();
+  // DOM 此时已经更新
+
+  //重置
+  addDialogRef.value.resetForm();
+
+  if (flag === "新增班级") {
+    delete addDialogRef.value.form.id;
+  } else if (flag === "编辑班级") {
+    let editObj = {
+      ...row,
+      headTeacher: row.headTeacher.name,
+    };
+    Object.assign(addDialogRef.value.form, editObj);
+    // addDialogRef.value.form = { ...editObj };
   }
 };
 //弹窗提交（子组件通过emit传递自定义事件，父组件实现操作结果）

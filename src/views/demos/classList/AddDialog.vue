@@ -7,10 +7,16 @@
     <el-form :model="form" ref="addFormRef" :rules="rules" label-width="80px">
       <!-- prop 必须与 rules 中的 key 一致 -->
       <el-form-item label="班级编号" prop="classId">
-        <el-input v-model="form.classId" />
+        <el-input
+          v-model="form.classId"
+          :disabled="addDialogObj.title === '编辑班级'"
+        />
       </el-form-item>
       <el-form-item label="名称" prop="className">
-        <el-input v-model="form.className" />
+        <el-input
+          v-model="form.className"
+          :disabled="addDialogObj.title === '编辑班级'"
+        />
       </el-form-item>
       <el-form-item label="班主任" prop="headTeacher">
         <el-select v-model="form.headTeacher" clearable>
@@ -136,34 +142,61 @@ const save = async () => {
     new Date().getDay();
 
   if (valid) {
-    axios
-      .post("/api/getClassList", {
-        ...form,
-        headTeacher: teacherObj,
-        establishDate: time,
-      })
-      .then(function (res) {
-        // 处理成功情况
-        console.log(res);
-        ElMessage({ message: "操作成功", type: "success" });
-        //成功事件返回emit
-        emits("addOk");
+    if (addDialogObj.title === "新增班级") {
+      axios
+        .post("/api/getClassList", {
+          ...form,
+          headTeacher: teacherObj,
+          establishDate: time,
+        })
+        .then(function (res) {
+          // 处理成功情况
+          console.log(res);
+          ElMessage({ message: "操作成功", type: "success" });
+          //成功事件返回emit
+          emits("addOk");
 
-        // 成功后关闭弹窗
-        addDialogObj.show = false;
-      })
-      .catch(function (error) {
-        // 处理错误情况
-        console.log(error);
-      })
-      .finally(function () {
-        // 总是会执行
-      });
+          // 成功后关闭弹窗
+          addDialogObj.show = false;
+        })
+        .catch(function (error) {
+          // 处理错误情况
+          console.log(error);
+        })
+        .finally(function () {
+          // 总是会执行
+        });
+    } else {
+      axios
+        .put(`/api/getClassList/${form.id}`, {
+          ...form,
+          headTeacher: teacherObj,
+        })
+        .then(function (res) {
+          // 处理成功情况
+          ElMessage({ message: "操作成功", type: "success" });
+          //成功事件返回emit
+          emits("addOk");
+          // 成功后关闭弹窗
+          addDialogObj.show = false;
+        })
+        .catch(function (error) {
+          // 处理错误情况
+          console.log(error);
+        })
+        .finally(function () {
+          // 总是会执行
+        });
+    }
   } else {
     console.log("error submit!", fields);
   }
 };
 
+const resetForm = () => {
+  addFormRef.value.resetFields();
+};
+
 // 暴露给父组件的属性和方法
-defineExpose({ addDialogObj, form });
+defineExpose({ addDialogObj, form, resetForm });
 </script>
