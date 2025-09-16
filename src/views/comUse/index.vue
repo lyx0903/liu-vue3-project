@@ -12,7 +12,7 @@
             <el-input v-model="formInline.classId" clearable />
           </el-form-item>
           <el-form-item label="班级名称" prop="className">
-            <el-input v-model="formInline.className" clearable />
+            <el-input v-model.trim="formInline.className" clearable />
           </el-form-item>
           <el-form-item label="类型" prop="classType">
             <el-select v-model="formInline.classType" clearable>
@@ -124,13 +124,6 @@ const formInline = reactive({
   classType: "",
 });
 
-// 重置
-const reset = () => {
-  if (!formRef.value) {
-    formRef.value.resetFields();
-  }
-};
-
 // 传递给子组件进行循环展示(value 默认展示0 ，接口获取到列表之后动态计算)
 const count = ref([
   { label: "班级数量", value: 0, type: "primary" },
@@ -143,7 +136,7 @@ const tableData = ref([]); //表格动态数据
 const getList = () => {
   // 向给定ID的用户发起请求
   axios
-    .get("/api/getClassList")
+    .get("/api/getClassList", { params: formInline })
     .then(function (res) {
       // 处理成功情况，更新表格数据
       tableData.value = res.data;
@@ -164,6 +157,18 @@ const getList = () => {
     .finally(function () {
       // 总是会执行
     });
+};
+
+const formRef = useTemplateRef("formRef");
+// 查询
+const search = () => {
+  getList(); //获取列表，
+};
+
+// 重置
+const reset = () => {
+  formRef.value.resetFields();
+  getList();
 };
 
 //弹窗
