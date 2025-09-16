@@ -7,10 +7,16 @@
     <el-form :model="form" ref="addFormRef" :rules="rules" label-width="80px">
       <!-- prop 必须与 rules 中的 key 一致 -->
       <el-form-item label="班级编号" prop="classId">
-        <el-input v-model="form.classId" />
+        <el-input
+          v-model="form.classId"
+          :disabled="addDialogObj.title === '编辑'"
+        />
       </el-form-item>
       <el-form-item label="名称" prop="className">
-        <el-input v-model="form.className" />
+        <el-input
+          v-model="form.className"
+          :disabled="addDialogObj.title === '编辑'"
+        />
       </el-form-item>
       <el-form-item label="班主任" prop="headTeacher">
         <el-select v-model="form.headTeacher" clearable>
@@ -93,6 +99,7 @@ const form = reactive({
   description: "",
 });
 
+// 班主任列表
 const headTeacherOptions = [
   { name: "张采风", subject: "语文", teachingExperience: 2 },
   { name: "刘亚兴", subject: "数学", teachingExperience: 1 },
@@ -121,49 +128,84 @@ const rules = reactive({
   description: [{ required: true, message: "请输入班级描述", trigger: "blur" }],
 });
 
+// 表单提交保存函数（处理新增、编辑表单提交逻辑，包括数据验证、格式处理和接口请求）
 const save = async () => {
-  const valid = await addFormRef.value.validate();
+  const valid = await addFormRef.value.validate(); // 调用表单验证方法，获取验证结果（valid为布尔值）
 
+  // 根据表单中选择的班主任姓名，从班主任选项中匹配完整信息对象
   const teacherObj = headTeacherOptions.find((item) => {
     return form.headTeacher === item.name;
   });
 
+  // 生成当前日期（格式：年-月-日）
   const time =
     new Date().getFullYear() +
     "-" +
-    (new Date().getMonth() + 1) +
+    (new Date().getMonth() + 1) + // 月份从0开始，需+1
     "-" +
     new Date().getDay();
 
+  // 表单验证通过
   if (valid) {
-    axios
-      .post("/api/getClassList", {
-        ...form,
-        headTeacher: teacherObj,
-        establishDate: time,
-      })
-      .then(function (res) {
-        // 处理成功情况
-        console.log(res);
-        ElMessage({ message: "操作成功", type: "success" });
-        //成功事件返回emit
-        emits("addOk");
+    // 新增：post请求，提交数据
+    if (addDialogObj.title === "新增") {
+      axios
+        .post("/api/getClassList", {
+          ...form, // 扩展表单基础数据
+          headTeacher: teacherObj, // 补充完整的班主任信息
+          establishDate: time, // 添加创建日期
+        })
+        .then(function (res) {
+          // 处理成功情况
+          console.log(res);
+          ElMessage({ message: "操作成功", type: "success" });
+          emits("addOk");// 触发成功事件，通知父组件刷新数据
 
-        // 成功后关闭弹窗
-        addDialogObj.show = false;
-      })
-      .catch(function (error) {
-        // 处理错误情况
-        console.log(error);
-      })
-      .finally(function () {
-        // 总是会执行
-      });
+          // 成功后关闭弹窗
+          addDialogObj.show = false;
+        })
+        .catch(function (error) {
+          // 处理错误情况
+          console.log(error);
+        })
+        .finally(function () {
+          // 总是会执行
+        });
+    } else {
+    // 编辑：put请求，更新数据
+      axios
+        .put(`/api/getClassList/${form.id}`, {
+          ...form,
+          headTeacher: teacherObj,
+        })
+        .then(function (res) {
+          // 处理成功情况
+          console.log(res);
+          ElMessage({ message: "操作成功", type: "success" });
+          //成功事件返回emit
+          emits("addOk");
+
+          // 成功后关闭弹窗
+          addDialogObj.show = false;
+        })
+        .catch(function (error) {
+          // 处理错误情况
+          console.log(error);
+        })
+        .finally(function () {
+          // 总是会执行
+        });
+    }
   } else {
     console.log("error submit!", fields);
   }
 };
 
+// 重置表单
+const resetForm = () => {
+  addFormRef.value.resetFields();
+};
+
 // 暴露给父组件的属性和方法
-defineExpose({ addDialogObj, form });
+defineExpose({ addDialogObj, form, resetForm });
 </script>

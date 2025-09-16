@@ -43,7 +43,7 @@
         <!-- 复选框列 -->
         <el-table-column type="selection" width="55" />
         <!-- 内容 -->
-        <el-table-column prop="classId" label="班级编号" width="100" />
+        <el-table-column prop="classId" label="班级编号" width="120" />
         <el-table-column prop="className" label="名称" width="120" />
         <el-table-column prop="headTeacher" label="班主任" width="200">
           <template #default="scope">
