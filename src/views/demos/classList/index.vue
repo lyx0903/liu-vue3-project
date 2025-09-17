@@ -2,17 +2,22 @@
   <div class="wrap">
     <FormHead>
       <template #forms>
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="班级名称">
+        <el-form
+          :inline="true"
+          :model="formInline"
+          class="demo-form-inline"
+          ref="formRef"
+        >
+          <el-form-item label="班级名称" prop="className">
             <el-input v-model="formInline.className" clearable />
           </el-form-item>
-          <el-form-item label="班主任">
+          <el-form-item label="班主任" prop="headTeacher">
             <el-select v-model="formInline.headTeacher" clearable>
               <el-option label="张敏" value="张敏" />
               <el-option label="李强" value="李强" />
             </el-select>
           </el-form-item>
-          <el-form-item label="班级类型">
+          <el-form-item label="班级类型" prop="classType">
             <el-select v-model="formInline.classType" clearable>
               <el-option label="平行班" value="平行班" />
               <el-option label="实验班" value="实验班" />
@@ -127,7 +132,7 @@ const count = ref([
 //请求接口获取列表
 const getList = () => {
   axios
-    .get("/api/getClassList")
+    .get("/api/getClassList", { params: formInline })
     .then(function (res) {
       console.log(res.data); //调试器中查看输出的内容
       tableData.value = res.data; //res.data 赋值给表格，在页面中显示
@@ -144,6 +149,18 @@ const getList = () => {
     .finally(function () {
       // 总是会执行
     });
+};
+
+// 查询
+const onSubmit = () => {
+  getList(); //掉接口，接口中传入查询条件对象作为第二个参数
+};
+
+// 重置
+const formRef = useTemplateRef("formRef");
+const reset = () => {
+  formRef.value.resetFields();
+  getList();
 };
 
 const multipleSelection = ref([]);
@@ -168,7 +185,7 @@ const batchDelete = async () => {
         await deleteById(item.id);
       }
       ElMessage({ type: "success", message: "删除成功" }); //消息提示
-      getList(); //获取列表 
+      getList(); //获取列表
     }
   } catch (error) {
     ElMessage({ type: "info", message: "已取消" });
@@ -186,7 +203,7 @@ const deleteRow = async (id) => {
     if (isDelete) {
       await deleteById(id);
       ElMessage({ type: "success", message: "删除成功" }); //消息提示
-      getList(); //获取列表 
+      getList(); //获取列表
     }
   } catch (error) {
     ElMessage({ type: "info", message: "已取消" });
