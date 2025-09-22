@@ -17,6 +17,7 @@ import TemplateUse from "../views/templateUse/index.vue";
 import Component from "../views/component/index.vue";
 import ComUse from "../views/comUse/index.vue";
 import ClassList from "../views/demos/classList/index.vue";
+import Users from '../views/demos/users/users.vue'
 
 // 路由规则
 const routes = [
@@ -57,13 +58,17 @@ const routes = [
   },
   {
     path: "/ComUse",
-    name: "组件应用",
+    name: "增删改查",
     component: ComUse,
   },
   {
     path: "/ClassList",
     name: "班级列表",
     component: ClassList,
+  },{
+    path: "/Users",
+    name: "用户管理",
+    component: Users,
   },
   // {
   //   path: '/about',
