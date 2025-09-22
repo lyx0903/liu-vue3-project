@@ -192,6 +192,7 @@ const openDialog = async (flag, row) => {
       headTeacher: row.headTeacher.name,
     };
     Object.assign(addDialogRef.value.form, editObj); // 将行数据合并到表单中
+    //editObj 不是响应式对象，直接赋值给当前行会导致数据失去响应性（后续对该对象的修改无法触发视图更新）；即使新对象是响应式的，直接替换数组元素的操作在某些场景下可能被框架的响应式追踪机制忽略
   }
 };
 
