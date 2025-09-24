@@ -4,6 +4,8 @@ createWebHistory()：使用 HTML5 历史模式（无 hash 符号 #）
 createWebHashHistory()：使用 hash 模式（URL 中带 #）
 */
 import { createRouter, createWebHistory } from "vue-router";
+// 按需导入需要的图标
+import { Document, User, Setting, Menu } from "@element-plus/icons-vue";
 
 // 导入组件
 // import Home from '../views/Home.vue'
@@ -17,8 +19,8 @@ import TemplateUse from "../views/templateUse/index.vue";
 import Component from "../views/component/index.vue";
 import ComUse from "../views/comUse/index.vue";
 import ClassList from "../views/demos/classList/index.vue";
-import Users from '../views/demos/users/users.vue'
-import Model from '../views/demos/model/index.vue'
+import Users from "../views/demos/users/users.vue";
+import Model from "../views/demos/model/index.vue";
 
 // 路由规则
 const routes = [
@@ -26,6 +28,7 @@ const routes = [
     path: "/", // 路由路径
     name: "模板语法", // 路由名称
     component: TemplateSyntax, // 对应的组件
+    meta: { icon: Document }, // 可自定义额外信息
   },
   {
     path: "/Reactivity",

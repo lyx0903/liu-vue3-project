@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 500px; height: 300px">
+  <div style="width: 100%; height: 80vh">
     <!-- 直接传入模型地址使用 -->
     <ModelViewer
       :modelSrc="modelSrc"
