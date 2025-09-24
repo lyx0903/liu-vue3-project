@@ -21,6 +21,8 @@ import ComUse from "../views/comUse/index.vue";
 import ClassList from "../views/demos/classList/index.vue";
 import Users from "../views/demos/users/users.vue";
 import Model from "../views/demos/model/index.vue";
+import FormAuto from "../views/formAuto/FormAuto.vue";
+import DynamicFormTable from "../views/formAuto/DynamicFormTable.vue";
 
 // 路由规则
 const routes = [
@@ -79,6 +81,16 @@ const routes = [
     path: "/Model",
     name: "3D模型",
     component: Model,
+  },
+  {
+    path: "/FormAuto",
+    name: "动态表单",
+    component: FormAuto,
+  },
+   {
+    path: "/DynamicFormTable",
+    name: "动态表格",
+    component: DynamicFormTable,
   },
   // {
   //   path: '/about',

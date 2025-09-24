@@ -23,8 +23,9 @@
               v-for="(item, index) in routerList"
               :key="index"
             >
-              <!-- 显示图标 -->
+              <!--  条件渲染：如果路由项配置了图标，则显示图标 -->
               <el-icon v-if="item.meta?.icon">
+                <!-- 动态组件：根据item.meta.icon的值渲染渲染对应的图标组件  :is="组件名" 是Vue中动态渲染组件的语法-->
                 <component :is="item.meta.icon" />
               </el-icon>
               {{ item.name }}</el-menu-item
