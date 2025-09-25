@@ -80,10 +80,10 @@ const props = defineProps({
     default: "",
   },
   // 场景背景颜色
-  backgroundColor: {
-    type: String,
-    default: "#f0f0f0",
-  },
+  // backgroundColor: {
+  //   type: String,
+  //   default: "#f0f0f0",
+  // },
   // 是否自动旋转
   autoRotate: {
     type: Boolean,
@@ -142,11 +142,11 @@ const initScene = () => {
   scene.background = new THREE.Color(props.backgroundColor);
 
   // 设置环境光
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
   scene.add(ambientLight);
 
   // 设置方向光（从斜上方照射，适合俯视视角）
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
   directionalLight.position.set(10, 15, 7.5);
   scene.add(directionalLight);
 

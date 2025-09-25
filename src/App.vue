@@ -61,4 +61,7 @@ onMounted(() => {
   height: 100vh;
   overflow-y: auto;
 }
+.el-menu-item{
+  height: 40px;
+}
 </style>

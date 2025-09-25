@@ -22,6 +22,12 @@
         <template v-if="item.type === '1'">
           <DynamicFormTable />
         </template>
+        <template v-if="item.type === '2'">
+          <DynamicTable />
+        </template>
+        <template v-if="item.type === '3'">
+          <Yuanjian />
+        </template>
         <!-- <component :is="tabs[editableTabsValue]" class="tab"></component> -->
       </el-tab-pane>
     </el-tabs>
@@ -61,6 +67,8 @@
 <script setup>
 import { ref, reactive } from "vue";
 import DynamicFormTable from "./DynamicFormTable.vue";
+import DynamicTable from "./DynamicTable.vue";
+import Yuanjian from "./Yuanjian.vue";
 
 let tabIndex = 1;
 const editableTabsValue = ref("0");
@@ -74,6 +82,11 @@ const editableTabs = ref([
     title: "Tab 2",
     type: "2",
     code: "tab002",
+  },
+  {
+    title: "Tab 3",
+    type: "3",
+    code: "tab003",
   },
 ]);
 
