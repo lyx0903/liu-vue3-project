@@ -5,7 +5,7 @@ createWebHashHistory()：使用 hash 模式（URL 中带 #）
 */
 import { createRouter, createWebHistory } from "vue-router";
 // 按需导入需要的图标
-import { Document, User, Setting, Menu } from "@element-plus/icons-vue";
+// import { Document, User, Setting, Menu } from "@element-plus/icons-vue";
 
 // 导入组件
 // import Home from '../views/Home.vue'
@@ -30,12 +30,17 @@ const routes = [
     path: "/", // 路由路径
     name: "模板语法", // 路由名称
     component: TemplateSyntax, // 对应的组件
-    meta: { icon: Document }, // 可自定义额外信息
+    meta: {
+      icon: 'Document', // 用markRaw标记，避免响应式追踪
+    }, // 可自定义额外信息
   },
   {
     path: "/Reactivity",
     name: "响应式基础",
     component: Reactivity,
+    meta: {
+      icon: "User",
+    },
   },
   {
     path: "/FormBinding",
@@ -87,7 +92,7 @@ const routes = [
     name: "动态表单",
     component: FormAuto,
   },
-   {
+  {
     path: "/DynamicFormTable",
     name: "动态表格",
     component: DynamicFormTable,
@@ -108,3 +113,13 @@ const router = createRouter({
 });
 
 export default router; // 导出路由实例
+
+// 【 icon使用 】
+// 当 icon 全局引用时，才能路由配置中直接使用，
+
+// 如果是局部引用，需要使用 markRaw ，避免图标被渲染成响应式
+// import { markRaw } from "vue";
+
+// meta: {
+//   icon: markRaw(Document), // 用markRaw标记，避免响应式追踪
+// }, // 可自定义额外信息

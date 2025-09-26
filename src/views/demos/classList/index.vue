@@ -27,7 +27,7 @@
       </template>
       <template #btns>
         <el-button type="primary" @click="onSubmit">查询</el-button>
-        <el-button type="info" @click="reset">重置</el-button>
+        <el-button type="info" @click="reset" :icon="Refresh">重置</el-button>
       </template>
     </FormHead>
     <Btns :countList="count">
@@ -103,14 +103,14 @@ import {
 } from "vue";
 import Btns from "@/components/Btns/index.vue";
 import axios from "axios";
-import {
-  Delete,
-  Edit,
-  Search,
-  Refresh,
-  Download,
-  Plus,
-} from "@element-plus/icons-vue";
+// import {
+//   Delete,
+//   Edit,
+//   Search,
+//   Refresh,
+//   Download,
+//   Plus,
+// } from "@element-plus/icons-vue";
 import AddDialog from "./AddDialog.vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 
