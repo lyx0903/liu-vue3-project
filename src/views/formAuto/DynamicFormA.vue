@@ -1,16 +1,23 @@
 <template>
-  <div class="container mx-auto p-4 max-w-4xl">
-    <div class="mb-4 flex justify-between items-center">
-      <h2 class="text-2xl font-bold text-gray-800">动态表单管理</h2>
-      <el-button type="primary" @click="showAddDialog = true">
-        新增字段
-      </el-button>
-      <el-button type="primary" @click="editHandle" :disabled="isEdit"> 编辑 </el-button>
-      <el-button type="primary" @click="saveHandle" :disabled="!isEdit"> 保存 </el-button>
-    </div>
+  <div class="cont">
+    <el-row>
+      <el-col :span="12">
+        <el-button type="primary" @click="showAddDialog = true">
+          新增字段
+        </el-button>
+      </el-col>
+      <el-col :span="12" align="right">
+        <el-button type="warning" @click="editHandle" :disabled="isEdit"
+          >编辑</el-button
+        >
+        <el-button type="primary" @click="saveHandle" :disabled="!isEdit"
+          >保存</el-button
+        >
+      </el-col>
+    </el-row>
 
     <!-- 动态表单表格 -->
-    <table>
+    <table class="my-table">
       <tr v-for="(item, index) in formItems" :key="index">
         <td>{{ item.label }}</td>
         <td>
@@ -94,10 +101,9 @@ const editHandle = () => {
   isEdit.value = true;
 };
 const saveHandle = () => {
-  console.log(formItems, 'biaoge');
+  console.log(formItems, "biaoge");
   isEdit.value = false;
 };
-
 
 // 表单数据
 const formItems = ref([
@@ -204,19 +210,45 @@ const handleDialogClose = () => {
 import { ElMessage, ElMessageBox } from "element-plus";
 </script>
 
-<style scoped>
-.container {
-  padding-top: 20px;
+<style scoped lang="scss">
+.cont {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-table {
+.my-table {
   width: 100%;
-  border-collapse: collapse
-}
-table tr {
-}
-table tr th,
-table tr td {
-  border: #ddd 1px solid;
+  border-collapse: collapse;
+  th,
+  td {
+    border: 1px solid #e5e7eb;
+    padding: 6px;
+    // text-align: left;
+    font-size: 14px;
+    line-height: 34px;
+  }
+  td {
+    &:first-child {
+      background-color: #f5f7fa;
+    }
+  }
+  th {
+    background-color: #f5f7fa;
+    font-weight: 500;
+    color: #606266;
+  }
+  tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+  .value-input {
+    width: 100%;
+  }
+
+  .empty-row {
+    text-align: center;
+    color: #909399;
+    padding: 30px 0;
+  }
 }
 </style>

@@ -1,23 +1,28 @@
 <template>
-  <div class="dynamic-table-container">
-    <div class="table-actions">
-      <el-button type="primary" @click="openAddColumnDialog">新增列</el-button>
-      <el-button @click="addRow" :disabled="!(tableColumns.length > 0)">
-        新增行
-      </el-button>
-      <el-button
-        @click="editHandle"
-        :disabled="isEdit || !(tableData.length > 0)"
-      >
-        编辑
-      </el-button>
-      <el-button
-        @click="saveHandle"
-        :disabled="!isEdit || tableData.length === 0"
-      >
-        保存
-      </el-button>
-    </div>
+  <div class="cont">
+    <el-row>
+      <el-col :span="12">
+        <el-button type="primary" @click="openAddColumnDialog">
+          新增列
+        </el-button>
+      </el-col>
+      <el-col :span="12" align="right">
+        <el-button
+          type="warning"
+          @click="editHandle"
+          :disabled="isEdit || !(tableData.length > 0)"
+        >
+          编辑
+        </el-button>
+        <el-button
+          type="primary"
+          @click="saveHandle"
+          :disabled="!isEdit || tableData.length === 0"
+        >
+          保存
+        </el-button>
+      </el-col>
+    </el-row>
 
     <el-table
       :data="tableData"
@@ -50,23 +55,31 @@
             @blur="handleCellBlur(scope, column.prop)"
             :placeholder="`请输入${column.label}`"
           />
-          <span v-else>{{scope.row[column.prop]}}</span>
+          <span v-else>{{ scope.row[column.prop] }}</span>
         </template>
       </el-table-column>
 
       <!-- 操作列 -->
-      <el-table-column label="操作" width="120" v-if="tableData.length > 0 && isEdit">
+      <el-table-column
+        label="操作"
+        width="120"
+        v-if="tableData.length > 0 && isEdit"
+      >
         <template #default="scope">
-          <el-button
-            size="small"
-            type="danger"
-            @click="deleteRow(scope.$index)"
-          >
+          <el-button link type="danger" @click="deleteRow(scope.$index)">
             删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <el-button
+      style="width: 100%"
+      @click="addRow"
+      :disabled="!(tableColumns.length > 0)"
+    >
+      新增行
+    </el-button>
 
     <!-- 新增列对话框 -->
     <el-dialog v-model="addColumnDialogVisible" title="新增列" width="30%">
@@ -217,13 +230,9 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.dynamic-table-container {
-  padding: 20px;
-}
-
-.table-actions {
-  margin-bottom: 15px;
+.cont {
   display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 </style>

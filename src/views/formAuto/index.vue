@@ -13,20 +13,18 @@
         :label="item.title"
         :name="item.name"
       >
-        <div class="tab-content">
-          <!-- <p>标题: {{ item.title }}</p> -->
+        <!-- <div class="tab-content">
           <p>类型: {{ item.type }}</p>
           <p>编码: {{ item.code }}</p>
-          <!-- <p>内容: {{ item.content }}</p> -->
-        </div>
+        </div> -->
         <template v-if="item.type === '1'">
-          <DynamicFormTable />
+          <DynamicFormA />
         </template>
         <template v-if="item.type === '2'">
-          <DynamicTable />
+          <DynamicFormB />
         </template>
         <template v-if="item.type === '3'">
-          <Yuanjian />
+          <DynamicFormC />
         </template>
         <!-- <component :is="tabs[editableTabsValue]" class="tab"></component> -->
       </el-tab-pane>
@@ -66,9 +64,9 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import DynamicFormTable from "./DynamicFormTable.vue";
-import DynamicTable from "./DynamicTable.vue";
-import Yuanjian from "./Yuanjian.vue";
+import DynamicFormA from "./DynamicFormA.vue";
+import DynamicFormB from "./DynamicFormB.vue";
+import DynamicFormC from "./DynamicFormC.vue";
 
 let tabIndex = 1;
 const editableTabsValue = ref("0");
@@ -168,11 +166,6 @@ const resetForm = () => {
 </script>
 
 <style>
-.demo-tabs > .el-tabs__content {
-  padding: 32px;
-  color: #6b778c;
-}
-
 .tab-content {
   font-size: 14px;
   line-height: 1.6;
