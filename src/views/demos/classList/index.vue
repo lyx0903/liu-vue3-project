@@ -32,9 +32,12 @@
     </FormHead>
     <Btns :countList="count">
       <template #btn>
-        <el-button type="primary" @click="openDialog('新增班级')"
-          >新增</el-button
+        <el-button type="primary" icon="Plus" @click="openDialog('新增班级')"
+          ><i-ep-add-location /><i-material-symbols-10k-outline-sharp />新增</el-button
         >
+
+
+
         <el-button
           type="danger"
           @click="batchDelete"
@@ -72,7 +75,7 @@
           <template #default="scope">
             <el-button
               type="primary"
-              :icon="Edit"
+              icon="Edit"
               plain
               circle
               @click="openDialog('编辑班级', scope.row)"

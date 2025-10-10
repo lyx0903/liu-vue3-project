@@ -1,12 +1,12 @@
 import { createApp } from "vue";
 import "./style.css";
-import ElementPlus from "element-plus";
-import "element-plus/dist/index.css";
+// import ElementPlus from "element-plus";
+// import "element-plus/dist/index.css";
 import App from "./App.vue";
 import router from "./router"; // 引入路由配置
 import FormHead from "@/components/FormHead/index.vue"; //引入全局组件
 
-import * as ElementPlusIconsVue from "@element-plus/icons-vue"; // 导入所有 Element Plus 图标
+// import * as ElementPlusIconsVue from "@element-plus/icons-vue"; // 导入所有 Element Plus 图标
 
 const app = createApp(App);
 
@@ -16,16 +16,16 @@ const app = createApp(App);
 // }
 
 // 全局注册所有 element Plus 图标
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-  app.component(key, component);
-}
+// for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+//   app.component(key, component);
+// }
 
 // 注册一个组件（全局组件,页面中无需引入，直接使用）
 app.component("FormHead", FormHead);
 
 // 挂在路由和ElementPlus
 app.use(router);
-app.use(ElementPlus);
+// app.use(ElementPlus);
 // 应用实例必须在调用了 .mount() 方法后才会渲染出来。该方法接收一个“容器”参数，可以是一个实际的 DOM 元素或是一个 CSS 选择器字符串
 app.mount("#app");
 
