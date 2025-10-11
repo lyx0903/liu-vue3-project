@@ -26,20 +26,22 @@
         </el-form>
       </template>
       <template #btns>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-button type="primary" :icon="Search" @click="onSubmit">
+          <i-ep-Search />查询</el-button
+        >
         <el-button type="info" @click="reset" :icon="Refresh">重置</el-button>
       </template>
     </FormHead>
     <Btns :countList="count">
       <template #btn>
-        <el-button type="primary" icon="Plus" @click="openDialog('新增班级')"
-          ><i-ep-add-location /><i-material-symbols-10k-outline-sharp />新增</el-button
+        <el-button type="primary" :icon="Plus" @click="openDialog('新增班级')"
+          ><i-ep-AddLocation /><i-material-symbols-10k-outline-sharp />
+          <i-ep-Search />新增</el-button
         >
-
-
 
         <el-button
           type="danger"
+          :icon="Delete"
           @click="batchDelete"
           :disabled="multipleSelection.length === 0"
           >批量删除</el-button
@@ -75,7 +77,7 @@
           <template #default="scope">
             <el-button
               type="primary"
-              icon="Edit"
+              :icon="Edit"
               plain
               circle
               @click="openDialog('编辑班级', scope.row)"
@@ -106,14 +108,14 @@ import {
 } from "vue";
 import Btns from "@/components/Btns/index.vue";
 import axios from "axios";
-// import {
-//   Delete,
-//   Edit,
-//   Search,
-//   Refresh,
-//   Download,
-//   Plus,
-// } from "@element-plus/icons-vue";
+import {
+  Delete,
+  Edit,
+  Search,
+  Refresh,
+  Download,
+  Plus,
+} from "@element-plus/icons-vue";
 import AddDialog from "./AddDialog.vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 

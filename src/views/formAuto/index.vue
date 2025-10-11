@@ -174,4 +174,8 @@ const resetForm = () => {
 .tab-content p {
   margin: 8px 0;
 }
+
+.demo-tabs >.el-tabs__content{
+  padding: 0 !important;
+}
 </style>
