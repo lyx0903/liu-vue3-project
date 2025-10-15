@@ -12,10 +12,13 @@
    <el-button @click="show3D('/f22_raptor.glb')">飞机</el-button>
     <el-button @click="show3D('/free_merc_hovercar/scene.gltf')">汽车</el-button>
     <el-button @click="show3D('/f22_raptor.glb')">航空母舰</el-button>
+
+    <liu-button size="small" type="primary">111</liu-button>
 </template>
 
 <script setup>
 import ModelViewer from "@/components/ModelViewer/index.vue";
+import LiuButton from "@/components/LiuButton/index.vue";
 import { ref } from "vue";
 
 const onModelLoaded = () => {
