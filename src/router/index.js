@@ -23,6 +23,7 @@ import Users from "../views/demos/users/users.vue";
 import Model from "../views/demos/model/index.vue";
 import FormAuto from "../views/formAuto/index.vue";
 import Tree from "../views/tree/index.vue";
+import ToDoList from "../views/todoList/index.vue";
 
 // 路由规则
 const routes = [
@@ -31,7 +32,7 @@ const routes = [
     name: "模板语法", // 路由名称
     component: TemplateSyntax, // 对应的组件
     meta: {
-      icon: 'Document', // 用markRaw标记，避免响应式追踪
+      icon: "Document", // 用markRaw标记，避免响应式追踪
     }, // 可自定义额外信息
   },
   {
@@ -92,12 +93,17 @@ const routes = [
     name: "动态表单",
     component: FormAuto,
   },
-    {
+  {
     path: "/Tree",
     name: "树形",
     component: Tree,
   },
-  
+  {
+    path: "/ToDoList",
+    name: "需求清单",
+    component: ToDoList,
+  },
+
   // {
   //   path: '/about',
   //   name: 'About',
