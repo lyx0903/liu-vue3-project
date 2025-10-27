@@ -1,7 +1,7 @@
 import { createApp } from "vue"; // 从 Vue 框架中导入 createApp 函数，用于创建 Vue 应用实例
 import "./style.css"; // 导入全局样式文件，该文件中的样式会应用于整个应用
 // import ElementPlus from "element-plus";// 导入 Element Plus 组件库
-// import "element-plus/dist/index.css";// 导入 Element Plus 全局样式文件
+import "element-plus/dist/index.css";// 导入 Element Plus 全局样式文件
 import App from "./App.vue"; // 导入应用的根组件 App（整个应用的入口组件）
 import router from "./router"; // 导入路由配置实例，用于实现单页应用的路由功能
 import FormHead from "@/components/FormHead/index.vue"; // 导入自定义全局组件 FormHead（从指定路径引入）

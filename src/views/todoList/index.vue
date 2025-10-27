@@ -42,7 +42,9 @@
       <el-table-column prop="platform" label="平台" />
       <el-table-column prop="module" label="模块" />
       <el-table-column prop="feature" label="功能" width="200" />
-      <el-table-column prop="status" label="状态" />
+      <el-table-column prop="status" label="状态">
+        <template #default="scope"> </template>
+      </el-table-column>
       <el-table-column prop="proposer" label="负责人" />
       <el-table-column prop="frontend" label="前端" />
       <el-table-column prop="backend" label="后端" />
@@ -56,13 +58,13 @@
         label="操作"
         min-width="200"
       >
-        <template #default>
+        <template #default="scope">
           <el-button
             link
             type="primary"
             size="small"
             @click="openDialog('状态变更')"
-            >状态</el-button
+            >状态变更</el-button
           >
           <el-button
             link
@@ -89,10 +91,10 @@
       </el-table-column>
     </el-table>
   </div>
-  <addDialog ref="addDialogRef"></addDialog>
+  <addDialog ref="addDialogRef" @addok="addok"></addDialog>
 </template>
 <script setup>
-import { onMounted, reactive, ref, useTemplateRef } from "vue";
+import { onMounted, reactive, ref, useTemplateRef, nextTick } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import axios from "axios";
 import addDialog from "./addDialog.vue";
@@ -125,7 +127,7 @@ const demandStatus = reactive([
   { label: "待评审", value: "待评审" },
   { label: "待开发", value: "待开发" },
   { label: "开发中", value: "开发中" },
-  { label: "待验收", value: "待验收" },
+  { label: "已完成", value: "已完成" },
 ]);
 
 // 查询
@@ -140,15 +142,15 @@ const reset = () => {
 };
 // 删除
 const deleteRow = (id) => {
-  ElMessageBox.confirm("确认删除吗?", "Warning", {
+  ElMessageBox.confirm("确认删除吗?", "警告", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
   })
     .then(() => {
-      ElMessage({
-        type: "success",
-        message: "取消",
+      axios.delete(`api/todolist/${id}`).then(() => {
+        ElMessage({ type: "success", message: "取消" });
+        getlist();
       });
     })
     .catch((action) => {
@@ -157,37 +159,42 @@ const deleteRow = (id) => {
         message: action === "cancel" ? "已取消" : "",
       });
     });
-  // try {
-  // } catch (error) {
-  //   ElMessage({ type: "info", message: "已取消" });
-  // }
 };
 
 // 打开弹窗
 const addDialogRef = useTemplateRef("addDialogRef");
 const openDialog = async (flag, row) => {
-  console.log(addDialogRef.value.addDialogObj);
+  // console.log(addDialogRef.value.addDialogObj);
 
   addDialogRef.value.addDialogObj.show = true;
   addDialogRef.value.addDialogObj.title = flag;
+  nextTick(() => {});
+  addDialogRef.value.resetForm();
 };
 
 // 表格状态
-const tableRowClassName = (row, rowIndex) => {
-  if (rowIndex === 1) {
+const tableRowClassName = ({ row }) => {
+  if (row.status === "待开发") {
     return "warning-row";
-  } else if (rowIndex === 3) {
-    return "success-row";
   }
   return "";
+};
+
+const addok = () => {
+  getlist();
 };
 </script>
 
 <style lang="scss" scoped>
-.el-table .warning-row {
-  --el-table-tr-bg-color: #ff0000;
+::v-deep .el-table {
+  .warning-row {
+    --el-table-tr-bg-color: var(--el-color-warning-light-9);
+    &:hover > td {
+      background-color: var(--el-color-warning-light-8) !important;
+    }
+  }
 }
-.el-table .success-row {
-  --el-table-tr-bg-color: var(--el-color-success-light-9);
-}
+// .el-table .success-row {
+//   --el-table-tr-bg-color: var(--el-color-success-light-9);
+// }
 </style>
