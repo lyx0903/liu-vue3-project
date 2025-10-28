@@ -50,7 +50,6 @@
       <el-table-column prop="backend" label="后端" />
       <el-table-column prop="workload" label="工作量" />
       <el-table-column prop="proposalDate" label="提出日期" />
-      <el-table-column prop="startDate" label="开始时间" />
 
       <el-table-column
         prop="address"
@@ -63,22 +62,15 @@
             link
             type="primary"
             size="small"
-            @click="openDialog('状态变更')"
+            @click="openDialog('状态变更', scope.row)"
             >状态变更</el-button
           >
           <el-button
             link
             type="primary"
             size="small"
-            @click="openDialog('修改')"
+            @click="openDialog('修改', scope.row)"
             >修改</el-button
-          >
-          <el-button
-            link
-            type="primary"
-            size="small"
-            @click="openDialog('流转')"
-            >流转</el-button
           >
           <el-button
             link
@@ -170,6 +162,13 @@ const openDialog = async (flag, row) => {
   addDialogRef.value.addDialogObj.title = flag;
   nextTick(() => {});
   addDialogRef.value.resetForm();
+  if (flag === "新增") {
+    delete addDialogRef.value.form.id;
+  } else if (flag === "状态变更"||flag === "修改") {
+    addDialogRef.value.form.id = row.id; // 回显 id（用于更新时定位数据）
+    let editObj = { ...row,  };
+    Object.assign(addDialogRef.value.form, editObj);
+  }
 };
 
 // 表格状态

@@ -23,13 +23,15 @@
         <el-form-item label="负责人" prop="proposer">
           <el-input v-model="form.proposer" autocomplete="off" />
         </el-form-item>
+        <el-form-item label="前端" prop="frontend">
+          <el-input v-model="form.frontend" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="后端" prop="backend">
+          <el-input v-model="form.backend" autocomplete="off" />
+        </el-form-item>
       </template>
 
-      <template
-        v-if="
-          addDialogObj.title === '状态变更' || addDialogObj.title === '修改'
-        "
-      >
+      <template v-if="addDialogObj.title === '状态变更'">
         <el-form-item label="状态" prop="status">
           <el-select v-model="form.status">
             <el-option label="待开发" value="待开发" />
@@ -37,16 +39,6 @@
             <el-option label="待评审" value="待评审" />
             <el-option label="已完成" value="已完成" />
           </el-select>
-        </el-form-item>
-      </template>
-      <template
-        v-if="addDialogObj.title === '流转' || addDialogObj.title === '修改'"
-      >
-        <el-form-item label="前端" prop="frontend">
-          <el-input v-model="form.frontend" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="后端" prop="backend">
-          <el-input v-model="form.backend" autocomplete="off" />
         </el-form-item>
       </template>
     </el-form>
@@ -84,6 +76,7 @@ const form = reactive({
   frontend: "",
   backend: "",
   workload: "",
+  id: "",
 });
 
 const rules = reactive({
@@ -110,7 +103,7 @@ const save = async () => {
   if (valid) {
     if (addDialogObj.title === "新增") {
       axios
-        .post("api/todolist", { ...form, proposalDate: time })
+        .post("api/todolist", { ...form, proposalDate: time, status: "待开发" })
         .then((res) => {
           console.log(res.data);
           emits("addok"); //成功事件返回emit
@@ -118,7 +111,6 @@ const save = async () => {
           addDialogObj.show = false;
           const newId = res.data.id;
           // console.log(newId);
-          
         })
         .catch(function (error) {
           // 处理错误情况
@@ -127,9 +119,12 @@ const save = async () => {
         .finally(function () {
           // 总是会执行
         });
-    } else if (addDialogObj.title === "状态变更") {
+    } else if (
+      addDialogObj.title === "状态变更" ||
+      addDialogObj.title === "修改"
+    ) {
       axios
-        .put(`api/todolist/${form.id}`, { status: form.status })
+        .put(`api/todolist/${form.id}`, { ...form, status: form.status })
         .then((res) => {
           console.log(res.data);
           emits("addok"); //成功事件返回emit
