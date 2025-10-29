@@ -50,7 +50,7 @@ const routes = [
   },
   {
     path: "/Watchers",
-    name: "侦听器",
+    name: "图表",
     component: Watchers,
   },
   {
