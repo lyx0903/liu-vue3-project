@@ -12,6 +12,7 @@
 
     <!-- v-html 指令 -->
     <div v-html="rawHtml"></div>
+    <div>{{ rawHtml }}</div>
 
     <!-- Attribute 属性绑定 -->
     <div v-bind:style="color">123</div>

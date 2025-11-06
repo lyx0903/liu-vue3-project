@@ -14,6 +14,7 @@ import TemplateSyntax from "../views/TemplateSyntax.vue";
 import Reactivity from "../views/Reactivity.vue";
 import FormBinding from "../views/FormBinding.vue";
 import Watchers from "../views/Watchers.vue";
+import Charts from "../views/Charts.vue";
 import Demo from "../views/Demo.vue";
 import TemplateUse from "../views/templateUse/index.vue";
 import Component from "../views/component/index.vue";
@@ -47,11 +48,25 @@ const routes = [
     path: "/FormBinding",
     name: "表单绑定",
     component: FormBinding,
+    meta:{
+      icon:'Memo'
+    }
+  },
+   {
+    path: "/Watchers",
+    name: "侦听器",
+    component: Watchers,
+    meta:{
+      icon:'Monitor'
+    }
   },
   {
-    path: "/Watchers",
+    path: "/Charts",
     name: "图表",
-    component: Watchers,
+    component: Charts,
+    meta:{
+      icon:'PieChart'
+    }
   },
   {
     path: "/Demo",
