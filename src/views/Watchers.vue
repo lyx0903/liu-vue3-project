@@ -52,7 +52,7 @@
       <div class="text">汽车：{{ person3.car.c1 }}\{{ person3.car.c2 }}</div>
       <div class="btns">
         <el-button type="primary" @click="changeName3">改名字</el-button>
-        <el-button type="primary" @click="changeAge3">改年龄</el-button>
+        <!-- <el-button type="primary" @click="changeAge3">改年龄</el-button> -->
         <el-button type="primary" @click="changeC1">改汽车1</el-button>
         <el-button type="primary" @click="changeC2">改汽车2</el-button>
         <el-button type="primary" @click="changeCar">改汽车</el-button>
@@ -72,12 +72,21 @@
     </el-card>
     <el-card shadow="never" class="cont">
       <h2>监视上述多种数据</h2>
-      <div class="text">监视情况四的名字和汽车</div>
+      <div class="text">监视情况四的年龄和汽车</div>
+      <div class="btns">
+        <el-button type="primary" @click="change">改年龄&汽车</el-button>
+      </div>
+    </el-card>
+    <el-card shadow="never" class="cont">
+      <h2>watchEffect()</h2>
+    
     </el-card>
   </div>
 </template>
 
 <script setup>
+import { ElMessage } from "element-plus";
+
 // import { ref, reactive, watch } from "vue";
 
 // 情况一
@@ -110,9 +119,12 @@ const changePerson = () => {
 watch(
   person,
   (newVal, oldVal) => {
-    console.log(`新${newVal}，旧${oldVal}`);
-  }
-  // { deep: true }
+    const newStr = JSON.stringify(newVal);
+    const oldStr = JSON.stringify(oldVal);
+    // 只接受字符串，需要先转换成字符串，然后再拼接
+    ElMessage.success(`新：${newStr}，旧：${oldStr}`);
+  },
+  { deep: true }
 );
 
 // 情况三
@@ -129,6 +141,15 @@ const changeAge2 = () => {
 const changePerson2 = () => {
   Object.assign(person2, { name: "李四", age: 50 }); //覆盖之前的值
 };
+watch(
+  person2,
+  (newVal, oldVal) => {
+    const newStr = JSON.stringify(newVal);
+    const oldStr = JSON.stringify(oldVal);
+    ElMessage.success(`新：${newStr}，旧：${oldStr}`);
+  }
+  // {deep:true}
+);
 
 // 情况四
 const person3 = reactive({
@@ -141,9 +162,6 @@ const person3 = reactive({
 });
 const changeName3 = () => {
   person3.name += "~";
-};
-const changeAge3 = () => {
-  person3.age += 1;
 };
 const changeC1 = () => {
   person3.car.c1 += "奥迪";
@@ -159,22 +177,34 @@ const changeCar = () => {
 watch(
   () => person3.name,
   (newVal, oldVal) => {
-    console.log(`新${newVal}，旧${oldVal}`);
+    const newStr = JSON.stringify(newVal);
+    const oldStr = JSON.stringify(oldVal);
+    ElMessage.success(`新：${newStr}，旧：${oldStr}`);
   },
   { deep: true }
 );
 watch(
   () => person3.car,
   (newVal, oldVal) => {
-    console.log(`新${newVal}，旧${oldVal}`);
+    const newStr = JSON.stringify(newVal);
+    const oldStr = JSON.stringify(oldVal);
+    ElMessage.success(`新：${newStr}，旧：${oldStr}`);
   },
   { deep: true }
 );
 
 // 情况五
-watch([() => person3.name, () => person3.car], (newVal, oldVal) => {
-  console.log(`新${newVal}，旧${oldVal}`);
-});
+const change = () => {
+  person3.age += 1;
+  person3.car = { c1: "雅迪", c2: "爱玛" };
+};
+watch(
+  [() => person3.age, () => person3.car],
+  (newVal, oldVal) => {
+    console.log(`新${newVal}，旧${oldVal}`);
+  },
+  { deep: true }
+);
 </script>
 
 <style lang="scss" scoped>
