@@ -25,6 +25,7 @@ import Model from "../views/demos/model/index.vue";
 import FormAuto from "../views/formAuto/index.vue";
 import Tree from "../views/tree/index.vue";
 import ToDoList from "../views/todoList/index.vue";
+import Test from "../views/demos/test/index.vue";
 
 // 路由规则
 const routes = [
@@ -48,25 +49,25 @@ const routes = [
     path: "/FormBinding",
     name: "表单绑定",
     component: FormBinding,
-    meta:{
-      icon:'Memo'
-    }
+    meta: {
+      icon: "Memo",
+    },
   },
-   {
+  {
     path: "/Watchers",
     name: "侦听器",
     component: Watchers,
-    meta:{
-      icon:'Monitor'
-    }
+    meta: {
+      icon: "Monitor",
+    },
   },
   {
     path: "/Charts",
     name: "图表",
     component: Charts,
-    meta:{
-      icon:'PieChart'
-    }
+    meta: {
+      icon: "PieChart",
+    },
   },
   {
     path: "/Demo",
@@ -117,6 +118,11 @@ const routes = [
     path: "/ToDoList",
     name: "需求清单",
     component: ToDoList,
+  },
+   {
+    path: "/Test",
+    name: "测试-home",
+    component: Test,
   },
 
   // {
