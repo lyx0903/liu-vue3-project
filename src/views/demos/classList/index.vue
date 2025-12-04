@@ -93,6 +93,18 @@
         </el-table-column>
       </el-table>
     </div>
+
+    <el-pagination
+      v-model:current-page="currentPage"
+      v-model:page-size="pageSize"
+      :page-sizes="[10, 20, 30, 40]"
+      background
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+
     <AddDialog ref="addDialogRef" @addOk="addOk"> </AddDialog>
   </div>
 </template>
@@ -127,7 +139,7 @@ onMounted(() => {
 const formInline = reactive({}); //查询条件响应式对象
 const tableData = ref([]); // 表格数据
 const selectedIds = ref([]); // 选中的ID列表
-
+const allData = ref([]);
 // 传递给子组件 Btns ，子组件处理后展示
 const count = ref([
   { label: "班级数量", value: 0, type: "primary" },
@@ -140,11 +152,14 @@ const getList = () => {
     .get("/api/getClassList", { params: formInline })
     .then(function (res) {
       console.log(res.data); //调试器中查看输出的内容
-      tableData.value = res.data; //res.data 赋值给表格，在页面中显示
-      count.value[0].value = tableData.value.length;
-      // count.value[1].value =
+      allData.value = res.data; //res.data 赋值给所有数据，表格数据从中截取，实现本地分页
 
-      count.value[1].value = tableData.value.reduce((total, item) => {
+      total.value = res.data.length || []; //数据总条数，分页显示用
+
+      console.log(total.value);
+      count.value[0].value = allData.value.length;
+
+      count.value[1].value = allData.value.reduce((total, item) => {
         return total + item.studentCount;
       }, 0);
     })
@@ -264,4 +279,41 @@ const openDialog = async (flag, row) => {
 const addOk = () => {
   getList();
 };
+
+// 分页符
+const currentPage = ref(1);
+const pageSize = ref(10);
+const total = ref(0);
+
+// 计算当前页数据
+const currentPageData = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return allData.value.slice(start, end);
+});
+
+// 每页显示条数
+const handleSizeChange = (val) => {
+  console.log(`${val} items per page`);
+  pageSize.value = val; // 更新绑定的每页条数
+};
+const handleCurrentChange = (val) => {
+  console.log(`current page: ${val}`);
+  currentPage.value = val;
+};
+
+// 监听当前页数据变化，同步到表格（关键：表格只渲染当前页）
+watch(
+  () => currentPageData.value,
+  (newData) => {
+    tableData.value = newData;
+  },
+  { immediate: true } // 初始加载立即执行
+);
 </script>
+
+<style scoped lang="scss">
+.table {
+  margin-bottom: 20px;
+}
+</style>
