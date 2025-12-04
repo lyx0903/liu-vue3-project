@@ -26,6 +26,9 @@ import FormAuto from "../views/formAuto/index.vue";
 import Tree from "../views/tree/index.vue";
 import ToDoList from "../views/todoList/index.vue";
 import Test from "../views/demos/test/index.vue";
+import Zfhbsy from "../views/zfhbjgxt/index.vue";
+import Qxgl from "../views/zfhbjgxt/qxgl.vue";
+
 
 // 路由规则
 const routes = [
@@ -52,11 +55,18 @@ const routes = [
     meta: {
       icon: "Memo",
     },
+    meta: {
+      icon: "Memo",
+    },
   },
+  
   {
     path: "/Watchers",
     name: "侦听器",
     component: Watchers,
+    meta: {
+      icon: "Monitor",
+    },
     meta: {
       icon: "Monitor",
     },
@@ -65,6 +75,9 @@ const routes = [
     path: "/Charts",
     name: "图表",
     component: Charts,
+    meta: {
+      icon: "PieChart",
+    },
     meta: {
       icon: "PieChart",
     },
@@ -123,6 +136,16 @@ const routes = [
     path: "/Test",
     name: "测试-home",
     component: Test,
+  },
+  {
+    path: "/Zfhbsy",
+    name: "尊峰环保监管-首页",
+    component: Zfhbsy,
+  },
+   {
+    path: "/Qxgl",
+    name: "尊峰环保监管-权限管理",
+    component: Qxgl,
   },
 
   // {

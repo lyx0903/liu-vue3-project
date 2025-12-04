@@ -2,7 +2,7 @@
   <div class="header">
     <div class="logo">
       <img src="/public/vite.svg" alt="" />
-      <span>mc</span>
+      <h2>mc</h2>
     </div>
     <div class="date-weather">
       <span>{{ currentTime }}</span>
@@ -10,7 +10,11 @@
       <span>| 青海 晴 12℃ 无预警</span>
     </div>
     <div class="right">
-      <input type="text" class="search-box" placeholder="🔍 输入站点名称/省份..."/>
+      <input
+        type="text"
+        class="search-box"
+        placeholder="🔍 输入站点名称/省份..."
+      />
       <div class="user-info">
         <el-icon style="font-size: 16px"><User /></el-icon>
         <span>张三-总部监管部</span>
@@ -49,7 +53,7 @@ const currentWeek = weekMap[currentWeekNum]; // 转换为中文
   color: #e0e0e0;
   background: rgba(12, 30, 58, 0.9);
   backdrop-filter: blur(15px);
-  // border-bottom: 1px solid rgba(64, 140, 255, 0.2);
+  border-bottom: 1px solid rgba(64, 140, 255, 0.2);
   padding: 0 24px;
   display: flex;
   justify-content: space-between;
@@ -65,6 +69,10 @@ const currentWeek = weekMap[currentWeekNum]; // 转换为中文
     display: flex;
     align-items: center;
     gap: 5px;
+
+    h2 {
+      margin: 0;
+    }
   }
 
   // .logo::before {
