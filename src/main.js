@@ -6,7 +6,10 @@ import App from "./App.vue"; // 导入应用的根组件 App（整个应用的�
 import router from "./router"; // 导入路由配置实例，用于实现单页应用的路由功能
 import FormHead from "@/components/FormHead/index.vue"; // 导入自定义全局组件 FormHead（从指定路径引入）
 
- import * as ElementPlusIconsVue from "@element-plus/icons-vue"; // 导入所有 Element Plus 图标
+import * as ElementPlusIconsVue from "@element-plus/icons-vue"; // 导入所有 Element Plus 图标
+
+import zhCn from "element-plus/es/locale/lang/zh-cn"; //全局配置element-plus为中文
+  
 
 const app = createApp(App); // 创建 Vue 应用实例，并将根组件 App 作为参数传入
 
@@ -25,7 +28,9 @@ app.component("FormHead", FormHead);
 
 // 挂在路由和ElementPlus
 app.use(router);
-app.use(ElementPlus);
+app.use(ElementPlus, {
+  locale: zhCn,
+});
 // 应用实例必须在调用了 .mount() 方法后才会渲染出来。该方法接收一个“容器”参数，可以是一个实际的 DOM 元素或是一个 CSS 选择器字符串
 app.mount("#app");
 

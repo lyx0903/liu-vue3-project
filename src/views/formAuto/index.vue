@@ -13,24 +13,13 @@
         :label="item.title"
         :name="item.name"
       >
-        <!-- <div class="tab-content">
-          <p>类型: {{ item.type }}</p>
-          <p>编码: {{ item.code }}</p>
-        </div> -->
-        <template v-if="item.type === '1'">
-          <DynamicFormA />
-        </template>
-        <template v-if="item.type === '2'">
-          <DynamicFormB />
-        </template>
-        <template v-if="item.type === '3'">
-          <DynamicFormC />
-        </template>
-        <!-- <component :is="tabs[editableTabsValue]" class="tab"></component> -->
+        <template v-if="item.type === '1'"><DynamicFormA /></template>
+        <template v-if="item.type === '2'"><DynamicFormB /></template>
+        <template v-if="item.type === '3'"><DynamicFormC /></template>
       </el-tab-pane>
     </el-tabs>
 
-    <!-- 新增标签弹窗 -->
+    <!-- 新增标签页弹窗 -->
     <el-dialog v-model="dialogVisible" title="新增标签页" @close="resetForm">
       <el-form ref="tabForm" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="标签名称" prop="title">
@@ -63,30 +52,24 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import axios from "axios";
 import DynamicFormA from "./DynamicFormA.vue";
 import DynamicFormB from "./DynamicFormB.vue";
 import DynamicFormC from "./DynamicFormC.vue";
 
+onMounted(() => {
+  getData();
+});
+
 let tabIndex = 1;
 const editableTabsValue = ref("0");
-const editableTabs = ref([
-  {
-    title: "Tab 1",
-    type: "1",
-    code: "tab001",
-  },
-  {
-    title: "Tab 2",
-    type: "2",
-    code: "tab002",
-  },
-  {
-    title: "Tab 3",
-    type: "3",
-    code: "tab003",
-  },
-]);
+
+// const editableTabs = ref([
+//   { title: "Tab 1", type: "1", code: "tab001" },
+//   { title: "Tab 2", type: "2", code: "tab002" },
+//   { title: "Tab 3", type: "3", code: "tab003" },
+// ]);
+const editableTabs = ref([]); // 动态 tab 标签名
 
 const titleList = [
   { label: "基本信息", value: "基本信息" },
@@ -97,11 +80,7 @@ const titleList = [
 
 // 弹窗相关
 const dialogVisible = ref(false);
-const form = reactive({
-  title: "",
-  type: "",
-  code: "",
-});
+const form = reactive({ title: "", type: "", code: "" });
 
 // 表单验证规则
 const rules = {
@@ -112,6 +91,13 @@ const rules = {
 
 // 表单引用
 const tabForm = ref(null);
+
+// 调接口获取数据
+const getData = () => {
+  axios.get("/api/getFormAuto").then((res) => {
+    editableTabs.value = res.data || [];
+  });
+};
 
 // 处理标签编辑事件
 const handleTabsEdit = (targetName, action) => {
@@ -175,7 +161,7 @@ const resetForm = () => {
   margin: 8px 0;
 }
 
-.demo-tabs >.el-tabs__content{
+.demo-tabs > .el-tabs__content {
   padding: 0 !important;
 }
 </style>
