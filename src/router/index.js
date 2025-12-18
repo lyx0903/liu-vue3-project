@@ -55,52 +55,52 @@ const routes = [
     },
     children: [
       {
-        path: "Demo",
+        path: "demo",
         name: "案例",
         component: Demo,
       },
       {
-        path: "ComUse",
+        path: "comUse",
         name: "增删改查",
         component: ComUse,
       },
       {
-        path: "ClassList",
+        path: "classList",
         name: "班级列表",
         component: ClassList,
       },
       {
-        path: "Users",
+        path: "users",
         name: "用户管理",
         component: Users,
       },
       {
-        path: "Model",
+        path: "model",
         name: "3D模型",
         component: Model,
       },
       {
-        path: "FormAuto",
+        path: "formAuto",
         name: "动态表单",
         component: FormAuto,
       },
       {
-        path: "Tree",
+        path: "tree",
         name: "树形",
         component: Tree,
       },
       {
-        path: "ToDoList",
+        path: "todoList",
         name: "需求清单",
         component: ToDoList,
       },
       {
-        path: "Card",
+        path: "card",
         name: "B端组件测试",
         component: Card,
       },
       {
-        path: "Charts",
+        path: "charts",
         name: "图表",
         component: Charts,
       },
@@ -155,17 +155,17 @@ const routes = [
     },
     children: [
       {
-        path: "Test",
+        path: "test",
         name: "测试",
         component: Test,
       },
       {
-        path: "Zfhbsy",
+        path: "zfhbsy",
         name: "首页",
         component: Zfhbsy,
       },
       {
-        path: "Qxgl",
+        path: "qxgl",
         name: "权限管理",
         component: Qxgl,
       },
