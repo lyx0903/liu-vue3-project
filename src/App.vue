@@ -52,8 +52,8 @@
         <el-container>
           <el-main>
             <!-- 路由出口：匹配的组件将在这里渲染 -->
-            <router-view
-          /></el-main>
+            <router-view />
+          </el-main>
           <!-- <el-footer>Footer</el-footer> -->
         </el-container>
       </el-container>

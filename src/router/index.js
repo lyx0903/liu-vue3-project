@@ -161,7 +161,7 @@ const routes = [
       },
       {
         path: "zfhbsy",
-        name: "首页",
+        name: "首页2",
         component: Zfhbsy,
       },
       {
