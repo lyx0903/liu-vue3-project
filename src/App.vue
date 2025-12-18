@@ -13,26 +13,40 @@
             text-color="#fff"
             router
           >
-            <!-- 
-            router--启用菜单路由模式 
-            :index--结合 el-menu 的 router 属性使用时，index 的值会被作为路由路径
-            -->
-            <el-menu-item
-              :index="item.path"
-              class="nav-link"
-              v-for="(item, index) in routerList"
-              :key="index"
-            >
-              <!--  
-                条件渲染：如果路由项配置了图标，则显示图标 
-                动态组件：根据item.meta.icon的值渲染渲染对应的图标组件  :is="组件名" 是Vue中动态渲染组件的语法
-                :is 接收的组件可能被 Vue 处理为响应式对象
-                如果 item.meta.icon 对应的是 Element Plus 的图标组件，而这些组件在导入或存储时被意外地变成了响应式对象（例如用 ref 或 reactive 包裹），就会触发警告。 -->
-              <el-icon v-if="item.meta?.icon">
-                <component :is="item.meta.icon" />
-              </el-icon>
-              {{ item.name }}</el-menu-item
-            >
+            <!-- 递归渲染菜单 -->
+            <template v-for="(item, index) in routerList" :key="index">
+              <!-- 有子菜单的情况 -->
+              <el-sub-menu
+                v-if="item.children && item.children.length > 0"
+                :index="item.path"
+              >
+                <template #title>
+                  <el-icon v-if="item.meta?.icon">
+                    <component :is="item.meta.icon" />
+                  </el-icon>
+                  <span>{{ item.name }}</span>
+                </template>
+                <!-- 渲染子菜单 -->
+                <el-menu-item
+                  v-for="(child, childIndex) in item.children"
+                  :key="childIndex"
+                  :index="item.path + '/' + child.path"
+                >
+                  {{ child.name }}
+                </el-menu-item>
+              </el-sub-menu>
+              <!-- 无子菜单的情况 -->
+              <el-menu-item
+                v-else
+                :index="item.path"
+                class="nav-link"
+              >
+                <el-icon v-if="item.meta?.icon">
+                  <component :is="item.meta.icon" />
+                </el-icon>
+                {{ item.name }}
+              </el-menu-item>
+            </template>
           </el-menu>
         </el-aside>
         <el-container>
@@ -49,14 +63,11 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import router from "./router";
+import { ref } from "vue";
+import { routes } from "./router";
 
-const routerList = ref([]);
-
-onMounted(() => {
-  routerList.value = router.getRoutes(); // 通过路由实例获取所有路由配置
-});
+// 直接使用原始路由配置数组
+const routerList = ref(routes);
 </script>
 
 <style scoped>
