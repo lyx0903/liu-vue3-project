@@ -42,6 +42,14 @@ h1 {
   line-height: 1.1;
 }
 
+h2 {
+  font-size: 1em;
+  margin: 0;
+}
+h3 {
+  font-size: 0.8em;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -65,7 +73,7 @@ button:focus-visible {
   padding: 2em;
 }
 
-.el-main{
+.el-main {
   height: 100vh;
   overflow-y: auto;
 }

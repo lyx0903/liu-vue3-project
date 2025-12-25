@@ -33,6 +33,8 @@ import Qxgl from "../views/zfh/zfhbjgxt/qxgl.vue";
 import DailyWorkOverview from "../views/dailyWork/overview.vue";
 import DailyWorkReport from "../views/dailyWork/dailyReport.vue";
 import DailyWorkSummary from "../views/dailyWork/summary.vue";
+import DailyWorkAttendance from "../views/dailyWork/attendance/index.vue";
+
 
 // 路由规则
 const routes = [
@@ -184,6 +186,11 @@ const routes = [
         path: "overview",
         name: "工作总览",
         component: DailyWorkOverview,
+      },
+      {
+        path: "attendance/index",
+        name: "考勤",
+        component: DailyWorkAttendance,
       },
       {
         path: "dailyReport",
