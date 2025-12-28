@@ -30,100 +30,21 @@
         <div class="qian">
           <h3>前端</h3>
           <div class="qian-item">
-            <div class="person">
+            <div class="person" v-for="item in memberList">
               <div class="msg">
-                <el-avatar :icon="UserFilled" />
+                <el-avatar icon="UserFilled" />
                 <div class="person-msg">
                   <div class="name">
-                    张三 <span style="font-size: 12px; color: #999">Vue3</span>
+                    {{ item.name }}
+                    <span style="font-size: 12px; color: #999; margin-left: 5px">{{ item.techStack }}</span>
                   </div>
-                  <div class="state">在岗</div>
+                  <div class="state">{{ item.state }}</div>
                 </div>
               </div>
               <div class="divider"></div>
               <div class="person-time">
-                <p>签到时间：09:00:00</p>
-                <p>签退时间：17:00:00</p>
-              </div>
-            </div>
-            <div class="person">
-              <div class="msg">
-                <el-avatar :icon="UserFilled" />
-                <div class="person-msg">
-                  <div class="name">
-                    张三 <span style="font-size: 12px; color: #999">Vue3</span>
-                  </div>
-                  <div class="state">在岗</div>
-                </div>
-              </div>
-              <div class="divider"></div>
-              <div class="person-time">
-                <p>签到时间：09:00:00</p>
-                <p>签退时间：17:00:00</p>
-              </div>
-            </div>
-            <div class="person">
-              <div class="msg">
-                <el-avatar :icon="UserFilled" />
-                <div class="person-msg">
-                  <div class="name">
-                    张三 <span style="font-size: 12px; color: #999">Vue3</span>
-                  </div>
-                  <div class="state">在岗</div>
-                </div>
-              </div>
-              <div class="divider"></div>
-              <div class="person-time">
-                <p>签到时间：09:00:00</p>
-                <p>签退时间：17:00:00</p>
-              </div>
-            </div>
-            <div class="person">
-              <div class="msg">
-                <el-avatar :icon="UserFilled" />
-                <div class="person-msg">
-                  <div class="name">
-                    张三 <span style="font-size: 12px; color: #999">Vue3</span>
-                  </div>
-                  <div class="state">在岗</div>
-                </div>
-              </div>
-              <div class="divider"></div>
-              <div class="person-time">
-                <p>签到时间：09:00:00</p>
-                <p>签退时间：17:00:00</p>
-              </div>
-            </div>
-            <div class="person">
-              <div class="msg">
-                <el-avatar :icon="UserFilled" />
-                <div class="person-msg">
-                  <div class="name">
-                    张三 <span style="font-size: 12px; color: #999">Vue3</span>
-                  </div>
-                  <div class="state">在岗</div>
-                </div>
-              </div>
-              <div class="divider"></div>
-              <div class="person-time">
-                <p>签到时间：09:00:00</p>
-                <p>签退时间：17:00:00</p>
-              </div>
-            </div>
-            <div class="person">
-              <div class="msg">
-                <el-avatar :icon="UserFilled" />
-                <div class="person-msg">
-                  <div class="name">
-                    张三 <span style="font-size: 12px; color: #999">Vue3</span>
-                  </div>
-                  <div class="state">在岗</div>
-                </div>
-              </div>
-              <div class="divider"></div>
-              <div class="person-time">
-                <p>签到时间：09:00:00</p>
-                <p>签退时间：17:00:00</p>
+                <p>签到时间：{{item.signInTime}}</p>
+                <p>签退时间：{{item.signOutTime}}</p>
               </div>
             </div>
           </div>
@@ -155,17 +76,32 @@
 </template>
 
 <script setup>
-// import { useTemplateRef } from "vue";
-import { UserFilled } from "@element-plus/icons-vue";
+import axios from "axios";
 import * as echarts from "echarts"; // 引入ECharts
 
+onMounted(() => {
+  getList();
+});
+
+const memberList = ref([]);
+
+const getList = () => {
+  axios.get("/api/personList").then((res) => {
+    memberList.value = res.data;
+    console.log(memberList.value.length);
+
+    statistic.value[0].number = memberList.value.length;
+  });
+};
+// console.log(memberList.value.length);
+
 // 今日总览数据
-const statistic = [
-  { key: "totalPeople", title: "总人数", number: 20 },
-  { key: "onDutyPeople", title: "在岗人数", number: 15 },
-  { key: "leavePeople", title: "请假人数", number: 5 },
-  { key: "signedInPeople", title: "已签到人数", number: 15 },
-];
+const statistic = ref([
+  { key: "totalPeople", title: "总人数", number: "" },
+  { key: "onDutyPeople", title: "在岗人数", number: "" },
+  { key: "leavePeople", title: "请假人数", number: "" },
+  { key: "signedInPeople", title: "已签到人数", number: "" },
+]);
 
 // 签到
 const signIn = () => {
@@ -201,11 +137,6 @@ const signOut = () => {
   // 3. 刷新表格
   ElMessage.success("签退成功");
 };
-
-
-
-
-
 
 const tableData = [
   {

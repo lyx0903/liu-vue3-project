@@ -34,6 +34,7 @@ import DailyWorkOverview from "../views/dailyWork/overview.vue";
 import DailyWorkReport from "../views/dailyWork/dailyReport.vue";
 import DailyWorkSummary from "../views/dailyWork/summary.vue";
 import DailyWorkAttendance from "../views/dailyWork/attendance/index.vue";
+import DailyWorkPersonList from "../views/dailyWork/personlist/index.vue";
 
 
 // 路由规则
@@ -191,6 +192,11 @@ const routes = [
         path: "attendance/index",
         name: "考勤",
         component: DailyWorkAttendance,
+      },
+      {
+        path: "personlist/index",
+        name: "人员列表",
+        component: DailyWorkPersonList,
       },
       {
         path: "dailyReport",
